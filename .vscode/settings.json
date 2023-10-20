@@ -3,7 +3,7 @@
     "cmake.buildDirectory": "${workspaceFolder}/../../embedded-library-in-process/build",
     "cmake.generator": "Ninja",
     "cmake.configureArgs": [
-        "-DLLVM_TARGETS_TO_BUILD=AArch64",
+        "-DLLVM_TARGETS_TO_BUILD=Native",
         "-DCMAKE_CXX_STANDARD=20",
         "-DLLVM_ENABLE_EH=YES",
         "-DLLVM_ENABLE_LIBCXX=YES",
@@ -14,7 +14,9 @@
         "-DLLVM_ENABLE_PROJECTS=clang;lld",
         "-DLLVM_ENABLE_UNWIND_TABLES=YES",
         "-DLLVM_ENABLE_RTTI=YES",
-        "-DLLVM_OPTIMIZED_TABLEGEN=YES"
+        "-DLLVM_OPTIMIZED_TABLEGEN=YES",
+        "-DLLVM_CREATE_XCODE_TOOLCHAIN=YES",
+        "-DDEFAULT_SYSROOT=/Applications/Xcode-15.0.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk"
     ],
     "cmake.installPrefix": "${workspaceFolder}/../../embedded-library-in-process/prefix",
     "cmake.exportCompileCommandsFile": true,
