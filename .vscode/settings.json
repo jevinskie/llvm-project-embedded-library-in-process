@@ -1,0 +1,49 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/llvm",
+    "cmake.buildDirectory": "${workspaceFolder}/../../embedded-library-in-process/build",
+    "cmake.generator": "Ninja",
+    "cmake.configureArgs": [
+        "-DLLVM_TARGETS_TO_BUILD=AArch64",
+        "-DCMAKE_CXX_STANDARD=20",
+        "-DLLVM_ENABLE_EH=YES",
+        "-DLLVM_ENABLE_LIBCXX=YES",
+        "-DLLVM_ENABLE_ASSERTIONS=YES",
+        "-DLLVM_CCACHE_BUILD=YES",
+        "-DLLVM_BUILD_TOOLS=YES",
+        "-DBUILD_SHARED_LIBS=YES",
+        "-DLLVM_ENABLE_PROJECTS=clang;lld",
+        "-DLLVM_ENABLE_UNWIND_TABLES=YES",
+        "-DLLVM_ENABLE_RTTI=YES",
+        "-DLLVM_OPTIMIZED_TABLEGEN=YES"
+    ],
+    "cmake.installPrefix": "${workspaceFolder}/../../embedded-library-in-process/prefix",
+    "cmake.exportCompileCommandsFile": true,
+    "cmake.defaultVariants": {
+        "buildType": {
+            "default": "debug",
+            "description": "The build type.",
+            "choices": {
+                "debug": {
+                    "short": "Debug",
+                    "long": "Disable optimizations - include debug information.",
+                    "buildType": "Debug"
+                },
+                "release": {
+                    "short": "Release",
+                    "long": "Optimize for speed - exclude debug information.",
+                    "buildType": "Release"
+                },
+                "minsize": {
+                    "short": "MinSizeRel",
+                    "long": "Optimize for smallest binary size - exclude debug information.",
+                    "buildType": "MinSizeRel"
+                },
+                "reldeb": {
+                    "short": "RelWithDebInfo",
+                    "long": "Optimize for speed - include debug information.",
+                    "buildType": "RelWithDebInfo"
+                }
+            }
+        }
+    },
+}
