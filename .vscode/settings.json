@@ -16,7 +16,7 @@
         "-DLLVM_ENABLE_RTTI=YES",
         "-DLLVM_OPTIMIZED_TABLEGEN=YES",
         "-DLLVM_CREATE_XCODE_TOOLCHAIN=YES",
-        "-DDEFAULT_SYSROOT=/Applications/Xcode-15.0.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk"
+        "-DDEFAULT_SYSROOT=/Applications/Xcode-15.1-b1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk"
     ],
     "cmake.installPrefix": "${workspaceFolder}/../../embedded-library-in-process/prefix",
     "cmake.exportCompileCommandsFile": true,
