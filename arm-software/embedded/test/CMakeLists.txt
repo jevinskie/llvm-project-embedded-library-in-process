@@ -20,7 +20,7 @@ list(APPEND LLVM_TOOLCHAIN_TEST_DEPS
 )
 
 add_lit_testsuite(check-llvm-toolchain-lit
-  "Running LLVM Embedded Toolchain for Arm regression tests"
+  "Running Arm Toolchain for Embedded regression tests"
   ${CMAKE_CURRENT_BINARY_DIR}
   DEPENDS ${LLVM_TOOLCHAIN_TEST_DEPS}
 )

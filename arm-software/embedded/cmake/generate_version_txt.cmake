@@ -6,23 +6,17 @@
 # archive was created. This is configured in the .gitattributes file.
 # In the former case, this script will run a Git command to find out the
 # current revision. In the latter case the revision will be used as is.
-set(LLVMEmbeddedToolchainForArm_COMMIT "$Format:%H$")
+set(armtoolchain_COMMIT "$Format:%H$")
 
-if(NOT ${LLVMEmbeddedToolchainForArm_COMMIT} MATCHES "^[a-f0-9]+$")
+if(NOT ${armtoolchain_COMMIT} MATCHES "^[a-f0-9]+$")
     execute_process(
-        COMMAND git -C ${LLVMEmbeddedToolchainForArm_SOURCE_DIR} rev-parse HEAD
-        OUTPUT_VARIABLE LLVMEmbeddedToolchainForArm_COMMIT
+        COMMAND git -C ${ArmToolchainForEmbedded_SOURCE_DIR} rev-parse HEAD
+        OUTPUT_VARIABLE armtoolchain_COMMIT
         OUTPUT_STRIP_TRAILING_WHITESPACE
         COMMAND_ERROR_IS_FATAL ANY
     )
 endif()
 
-execute_process(
-    COMMAND git -C ${llvmproject_SOURCE_DIR} rev-parse HEAD
-    OUTPUT_VARIABLE llvmproject_COMMIT
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    COMMAND_ERROR_IS_FATAL ANY
-)
 if(NOT (LLVM_TOOLCHAIN_C_LIBRARY STREQUAL llvmlibc)) # libc in a separate repo?
     execute_process(
         COMMAND git -C ${${LLVM_TOOLCHAIN_C_LIBRARY}_SOURCE_DIR} rev-parse HEAD

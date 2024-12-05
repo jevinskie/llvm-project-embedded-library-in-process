@@ -1,11 +1,11 @@
 # Experimental LLVM libc support
 
-LLVM Embedded Toolchain for Arm uses
+Arm Toolchain for Embedded uses
 [`picolibc`](https://github.com/picolibc/picolibc) as the standard C
 library. For experimental and evaluation purposes, you can instead
 choose to use the LLVM project's own C library.
 
-> **NOTE:** `llvmlibc` support in LLVM Embedded Toolchain for Arm is
+> **NOTE:** `llvmlibc` support in Arm Toolchain for Embedded is
 > an experimental technology preview, with significant limitations.
 
 ## Building the toolchain with LLVM libc
@@ -20,7 +20,7 @@ toolchain based on LLVM libc.
 If you also add `-DLLVM_TOOLCHAIN_LIBRARY_OVERLAY_INSTALL=on` then the
 `package-llvm-toolchain` CMake target will generate an overlay package
 similar to the [newlib overlay
-package](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/blob/main/docs/newlib.md).
+package](/docs/newlib.md).
 If you unpack this over an existing installation of the toolchain,
 then you can switch to LLVM libc by adding `--config=llvmlibc.cfg` on
 the command line.
@@ -69,7 +69,7 @@ clang --config=llvmlibc.cfg --target=arm-none-eabi -march=armv7m -o hello hello.
 The overlay package installs a llvmlibc directory in the samples/src
 directory containing sample programs that use LLVM libc.
 
-## Limitations of LLVM libc in LLVM Embedded Toolchain for Arm
+## Limitations of LLVM libc in Arm Toolchain for Embedded
 
 At present, this toolchain does not build any C++ libraries to go with
 LLVM libc.

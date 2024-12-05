@@ -18,7 +18,7 @@
 
 # How to use this file
 #
-# This file is used to build LLVM Embedded Toolchain for Arm.
+# This file is used to build Arm Toolchain for Embedded.
 # Recent versions of the following tools are pre-requisites:
 # * A toolchain such as gcc & binutils
 # * cmake
@@ -35,7 +35,7 @@
 #   ninja check-llvm-toolchain
 #
 # To make it easy to get started, the above command checks out
-# llvm-project & picolibc Git repos automatically.
+# the picolibc Git repos automatically.
 #
 # If the repos are checked out automatically then cmake will fetch the
 # latest changes and check them out every time it runs. To disable this
@@ -44,13 +44,11 @@
 #
 # If you prefer you can check out and patch the repos manually and use those:
 #   mkdir repos
-#   git -C repos clone https://github.com/llvm/llvm-project.git
-#   git -C repos/llvm-project am -k $PWD/patches/llvm-project/*.patch
 #   git -C repos clone https://github.com/picolibc/picolibc.git
 #   git -C repos/picolibc am -k $PWD/patches/picolibc/*.patch
 #   mkdir build
 #   cd build
-#   cmake .. -GNinja -DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=../repos/llvm-project -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=../repos/picolibc
+#   cmake .. -GNinja -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=../repos/picolibc
 #   ninja
 #   ninja check-llvm-toolchain
 #
@@ -75,7 +73,7 @@
 # If cross-building, there will be two toolchains built:
 # 1. The "build" toolchain. This is used to build the libraries.
 # 2. The "host" toolchain. This is the toolchain that will be packaged
-#    up into "LLVM Embedded Toolchain for Arm".
+#    up into "Arm Toolchain for Embedded".
 # For "native" builds the "build" toolchain is also used as the "host"
 # toolchain.
 #
@@ -146,11 +144,6 @@ option(
     as it can also make the inital build slower due to the cold cache."
 )
 option(
-    APPLY_LLVM_PERFORMANCE_PATCHES
-    "During checkout, apply optional downstream patches to
-    llvm-project to improve performance."
-)
-option(
     ENABLE_QEMU_TESTING
     "Enable tests that use QEMU. This option is ON by default."
     ON
@@ -193,7 +186,7 @@ if(LLVM_TOOLCHAIN_LIBRARY_OVERLAY_INSTALL)
   endif()
 endif()
 
-set(BUG_REPORT_URL "https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/issues" CACHE STRING "")
+set(BUG_REPORT_URL "https://gitlab.arm.com/toolchains/arm-toolchain/-/issues" CACHE STRING "")
 set(LLVM_DISTRIBUTION_COMPONENTS
     clang-resource-headers
     clang
@@ -266,18 +259,17 @@ include(ExternalProject)
 include(FetchContent)
 include(ProcessorCount)
 
-# Check out and patch llvm-project and picolibc.
+# Check out and patch picolibc or newlib if required.
 #
 # If you'd rather check out and patch manually then run cmake with
-# -DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=/path/to/llvm-project
 # -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=/path/to/picolibc
+# -DFETCHCONTENT_SOURCE_DIR_NEWLIB=/path/to/newlib
 #
 # By default check out will be silent but this can be changed by running
 # cmake with -DFETCHCONTENT_QUIET=OFF
 #
 # If you want to stop cmake updating the repos then run
 # cmake . -DFETCHCONTENT_FULLY_DISCONNECTED=ON
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/fetch_llvm.cmake)
 if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL picolibc)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/fetch_picolibc.cmake)
 endif()
@@ -288,7 +280,7 @@ endif()
 ##################################################################################################
 # We set all project properties later, this call is just to enable the
 # CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT check
-project(LLVMEmbeddedToolchainForArm)
+project(ArmToolchainForEmbedded)
 # We generally want to install to a local directory to see what the
 # output will look like rather than install into the system, so change
 # the default accordingly.
@@ -321,6 +313,11 @@ install(
     COMPONENT llvm-toolchain-config-files
 )
 
+set(llvmproject_src_dir ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+add_subdirectory(
+    ${llvmproject_src_dir}/llvm llvm
+)
+
 if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL llvmlibc)
     install(
         FILES
@@ -339,7 +336,7 @@ if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL llvmlibc)
     # We need to build libc-hdrgen
     ExternalProject_Add(
         libc_hdrgen
-        SOURCE_DIR ${llvmproject_SOURCE_DIR}/llvm
+        SOURCE_DIR ${llvmproject_src_dir}/llvm
         DEPENDS ${lib_tool_dependencies}
         CMAKE_ARGS
             -DLLVM_ENABLE_RUNTIMES=libc
@@ -362,30 +359,26 @@ if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL llvmlibc)
     # them to the same location and point libc to that.
     set(LIBC_CFG_DIR ${CMAKE_BINARY_DIR}/llvmlibc-config)
     file(COPY
-        ${llvmproject_SOURCE_DIR}/libc/config/baremetal/config.json
-        ${llvmproject_SOURCE_DIR}/libc/config/baremetal/arm/.
+        ${llvmproject_src_dir}/libc/config/baremetal/config.json
+        ${llvmproject_src_dir}/libc/config/baremetal/arm/.
         DESTINATION
         ${LIBC_CFG_DIR}
     )
 endif()
 
-add_subdirectory(
-    ${llvmproject_SOURCE_DIR}/llvm llvm
-)
-
-get_directory_property(LLVM_VERSION_MAJOR DIRECTORY ${llvmproject_SOURCE_DIR}/llvm DEFINITION LLVM_VERSION_MAJOR)
-get_directory_property(LLVM_VERSION_MINOR DIRECTORY ${llvmproject_SOURCE_DIR}/llvm DEFINITION LLVM_VERSION_MINOR)
-get_directory_property(LLVM_VERSION_PATCH DIRECTORY ${llvmproject_SOURCE_DIR}/llvm DEFINITION LLVM_VERSION_PATCH)
+get_directory_property(LLVM_VERSION_MAJOR DIRECTORY ${llvmproject_src_dir}/llvm DEFINITION LLVM_VERSION_MAJOR)
+get_directory_property(LLVM_VERSION_MINOR DIRECTORY ${llvmproject_src_dir}/llvm DEFINITION LLVM_VERSION_MINOR)
+get_directory_property(LLVM_VERSION_PATCH DIRECTORY ${llvmproject_src_dir}/llvm DEFINITION LLVM_VERSION_PATCH)
 
 project(
-    LLVMEmbeddedToolchainForArm
+    ArmToolchainForEmbedded
     VERSION ${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR}.${LLVM_VERSION_PATCH}
-    DESCRIPTION "LLVM Embedded Toolchain for Arm"
-    HOMEPAGE_URL "https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm"
+    DESCRIPTION "Arm Toolchain for Embedded"
+    HOMEPAGE_URL "https://gitlab.arm.com/toolchains/arm-toolchain"
 )
 
 # Set package name for shorter archive file name
-set(SHORT_PACKAGE_NAME "LLVM-ET-Arm")
+set(SHORT_PACKAGE_NAME "ATfE")
 
 # Set package name and version.
 if(DEFINED LLVM_TOOLCHAIN_PACKAGE_NAME)
@@ -473,7 +466,7 @@ set(CPACK_PACKAGE_FILE_NAME ${PACKAGE_FILE_NAME})
 include(CPack)
 
 # Ensure LLVM tool symlinks are installed.
-list(APPEND CMAKE_MODULE_PATH ${llvmproject_SOURCE_DIR}/llvm/cmake/modules)
+list(APPEND CMAKE_MODULE_PATH ${llvmproject_src_dir}/llvm/cmake/modules)
 llvm_install_symlink(LLVM llvm-ranlib llvm-ar ALWAYS_GENERATE)
 llvm_install_symlink(LLVM llvm-readelf llvm-readobj ALWAYS_GENERATE)
 llvm_install_symlink(LLVM llvm-strip llvm-objcopy ALWAYS_GENERATE)
@@ -486,9 +479,9 @@ add_custom_target(
     version_txt
     COMMAND
     "${CMAKE_COMMAND}"
-    -DLLVMEmbeddedToolchainForArm_VERSION=${LLVMEmbeddedToolchainForArm_VERSION}
-    -DLLVMEmbeddedToolchainForArm_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}
-    -Dllvmproject_SOURCE_DIR=${llvmproject_SOURCE_DIR}
+    -DArmToolchainForEmbedded_VERSION=${ArmToolchainForEmbedded_VERSION}
+    -DArmToolchainForEmbedded_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}
+    -Dllvmproject_src_dir=${llvmproject_src_dir}
     # at most one of picolibc and newlib source dirs is needed, but easiest to
     # specify both definitions
     -Dpicolibc_SOURCE_DIR=${picolibc_SOURCE_DIR}
@@ -604,7 +597,6 @@ if(NOT PREBUILT_TARGET_LIBRARIES)
         -DENABLE_QEMU_TESTING=${ENABLE_QEMU_TESTING}
         -DENABLE_FVP_TESTING=${ENABLE_FVP_TESTING}
         -DFVP_CONFIG_DIR=${CMAKE_CURRENT_SOURCE_DIR}/fvp/config
-        -DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=${FETCHCONTENT_SOURCE_DIR_LLVMPROJECT}
         -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=${FETCHCONTENT_SOURCE_DIR_PICOLIBC}
         -DFETCHCONTENT_SOURCE_DIR_NEWLIB=${FETCHCONTENT_SOURCE_DIR_NEWLIB}
         -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -717,13 +709,13 @@ install(
 )
 
 set(third_party_license_files
-    ${llvmproject_SOURCE_DIR}/llvm/LICENSE.TXT          LLVM-LICENSE.txt
-    ${llvmproject_SOURCE_DIR}/clang/LICENSE.TXT         CLANG-LICENSE.txt
-    ${llvmproject_SOURCE_DIR}/lld/LICENSE.TXT           LLD-LICENSE.txt
-    ${llvmproject_SOURCE_DIR}/compiler-rt/LICENSE.TXT   COMPILER-RT-LICENSE.txt
-    ${llvmproject_SOURCE_DIR}/libcxx/LICENSE.TXT        LIBCXX-LICENSE.txt
-    ${llvmproject_SOURCE_DIR}/libcxxabi/LICENSE.TXT     LIBCXXABI-LICENSE.txt
-    ${llvmproject_SOURCE_DIR}/libunwind/LICENSE.TXT     LIBUNWIND-LICENSE.txt
+    ${llvmproject_src_dir}/llvm/LICENSE.TXT          LLVM-LICENSE.txt
+    ${llvmproject_src_dir}/clang/LICENSE.TXT         CLANG-LICENSE.txt
+    ${llvmproject_src_dir}/lld/LICENSE.TXT           LLD-LICENSE.txt
+    ${llvmproject_src_dir}/compiler-rt/LICENSE.TXT   COMPILER-RT-LICENSE.txt
+    ${llvmproject_src_dir}/libcxx/LICENSE.TXT        LIBCXX-LICENSE.txt
+    ${llvmproject_src_dir}/libcxxabi/LICENSE.TXT     LIBCXXABI-LICENSE.txt
+    ${llvmproject_src_dir}/libunwind/LICENSE.TXT     LIBUNWIND-LICENSE.txt
 )
 if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL picolibc)
     list(APPEND third_party_license_files
@@ -739,7 +731,7 @@ if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL newlib)
 endif()
 if(LLVM_TOOLCHAIN_C_LIBRARY STREQUAL llvmlibc)
     list(APPEND third_party_license_files
-        ${llvmproject_SOURCE_DIR}/libc/LICENSE.TXT      LIBC-LICENSE.TXT
+        ${llvmproject_src_dir}/libc/LICENSE.TXT      LIBC-LICENSE.TXT
     )
 endif()
 
@@ -869,7 +861,7 @@ if(LLVM_TOOLCHAIN_CROSS_BUILD_MINGW)
     string(REPLACE ";" "," LLVM_TARGETS_TO_BUILD_comma "${LLVM_TARGETS_TO_BUILD}")
     ExternalProject_Add(
         mingw-llvm
-        SOURCE_DIR ${llvmproject_SOURCE_DIR}/llvm
+        SOURCE_DIR ${llvmproject_src_dir}/llvm
         PREFIX mingw-llvm
         INSTALL_DIR mingw-llvm/install
         DEPENDS clang-tblgen llvm-config llvm-tblgen

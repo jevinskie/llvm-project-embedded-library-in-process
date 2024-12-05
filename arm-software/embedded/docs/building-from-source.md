@@ -2,7 +2,7 @@
 
 ## Host platforms
 
-LLVM Embedded Toolchain for Arm is built and tested on Ubuntu 18.04 LTS.
+Arm Toolchain for Embedded is built and tested on Ubuntu 18.04 LTS.
 
 The Windows version of LLVM tools is built on Windows Server 2019
 and lightly tested on Windows 10. Windows package provides runtime libraries
@@ -95,21 +95,20 @@ cmake .. -GNinja -DFETCHCONTENT_QUIET=OFF
 ninja llvm-toolchain
 ```
 
-To make it easy to get started, the above command checks out and patches llvm-project & picolibc Git repos automatically.
+To make it easy to get started, the above command checks out and patches the picolibc Git repo automatically.
 If you prefer you can check out and patch the repos manually and use those.
+Note, the patching of the llvm-project fork is not done automatically. See [Divergences from upstream](#Divergences-from-upstream)
 If you check out repos manually then it is your responsibility to ensure that the correct revisions are checked out - see `versions.json` to identify these.
 
 ```
 export CC=clang
 export CXX=clang++
 mkdir repos
-git -C repos clone https://github.com/llvm/llvm-project.git
-git -C repos/llvm-project am -k "$PWD"/patches/llvm-project/*.patch
 git -C repos clone https://github.com/picolibc/picolibc.git
 git -C repos/picolibc am -k "$PWD"/patches/picolibc/*.patch
 mkdir build
 cd build
-cmake .. -GNinja -DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=../repos/llvm-project -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=../repos/picolibc
+cmake .. -GNinja -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=../repos/picolibc
 ninja llvm-toolchain
 ```
 
@@ -128,7 +127,7 @@ ninja package-llvm-toolchain
 
 ### Cross-compiling the toolchain for Windows
 
-The LLVM Embedded Toolchain for Arm can be cross-compiled to run on Windows.
+The Arm Toolchain for Embedded can be cross-compiled to run on Windows.
 The compilation itself still happens on Linux. In addition to the prerequisites
 mentioned in the [Installing prerequisites](#installing-prerequisites) section
 you will also need a Mingw-w64 toolchain based on GCC 7.1.0 or above installed.
@@ -163,7 +162,7 @@ The same build directory can be used for both native and MinGW toolchains.
 
 ## Divergences from upstream
 
-See [patches](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/tree/main/patches)
+See [patches](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/patches)
 directory for the current set of differences from upstream.
 
 The patches for llvm-project are split between two folders, llvm-project and
@@ -171,9 +170,10 @@ llvm-project-perf. The former are generally required for building and
 successfully running all tests. The patches in llvm-project-perf are optional,
 and designed to improve performance in certain circumstances.
 
-To reduce divergence from upstream and potential patch conflicts, the
-performance patches are not applied by default, but can be enabled for an
-automatic checkout with the APPLY_LLVM_PERFORMANCE_PATCHES option.
+If not already applied, these must be done so manually before building, e.g.:
+```
+git -C arm-toolchain am -k "$PWD"/patches/llvm-project/*.patch
+```
 
 ## Building individual library variants
 
@@ -200,14 +200,13 @@ For example, to build the `armv7a_soft_nofp` variant using `picolibc`, using
 an existing LLVM build and source checkouts:
 
 ```
-cd LLVM-embedded-toolchain-for-Arm
+cd arm-software/embedded
 mkdir build-lib
 cd build-lib
 cmake ../arm-runtimes -G Ninja \
   -DVARIANT_JSON=../arm-multilib/json/variants/armv7a_soft_nofp.json \
   -DC_LIBRARY=picolibc \
   -DLLVM_BINARY_DIR=/path/to/llvm \
-  -DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=/path/to/llvm-project \
   -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=/path/to/picolibc
 ninja
 ```
@@ -235,14 +234,13 @@ their order in the mapping. This can be used to configure the project directly
 For example, building the picolibc variants using an existing LLVM build and
 source checkouts:
 ```
-cd LLVM-embedded-toolchain-for-Arm
+cd arm-software/embedded
 mkdir build-multilib
 cd build-multilib
 cmake ../arm-multilib -G Ninja \
   -DMULTILIB_JSON=../arm-multilib/json/multilib.json \
   -DC_LIBRARY=picolibc \
   -DLLVM_BINARY_DIR=/path/to/llvm \
-  -DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=/path/to/llvm-project \
   -DFETCHCONTENT_SOURCE_DIR_PICOLIBC=/path/to/picolibc
 ninja
 ```

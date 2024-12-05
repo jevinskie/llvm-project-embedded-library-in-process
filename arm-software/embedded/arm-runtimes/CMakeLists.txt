@@ -22,8 +22,10 @@ cmake_minimum_required(VERSION 3.20)
 
 project(arm-runtimes)
 
-# Root directory of the repo.
+# Root directory of the ATfE CMake scrpts.
 set(TOOLCHAIN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+# Root directory of the llvm-project source.
+set(llvmproject_src_dir ${TOOLCHAIN_SOURCE_DIR}/../..)
 
 # CMake arguments are loaded from the JSON file depending on which C
 # library is used, so this must be set before the JSON is processed.
@@ -104,7 +106,6 @@ set(TEMP_LIB_DIR "${CMAKE_CURRENT_BINARY_DIR}/tmp_install")
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 include(ExternalProject)
-include(${TOOLCHAIN_SOURCE_DIR}/cmake/fetch_llvm.cmake)
 
 # If a compiler launcher such as ccache has been set, it should be
 # passed down to each subproject build.
@@ -259,7 +260,7 @@ endif()
 
 ExternalProject_Add(
     compiler_rt
-    SOURCE_DIR ${llvmproject_SOURCE_DIR}/compiler-rt
+    SOURCE_DIR ${llvmproject_src_dir}/compiler-rt
     INSTALL_DIR compiler-rt/install
     CMAKE_ARGS
     ${compiler_launcher_cmake_args}
@@ -551,8 +552,8 @@ if(C_LIBRARY STREQUAL llvmlibc)
     # them to the same location and point libc to that.
     set(LIBC_CFG_DIR ${CMAKE_BINARY_DIR}/llvmlibc-config)
     file(COPY
-        ${llvmproject_SOURCE_DIR}/libc/config/baremetal/config.json
-        ${llvmproject_SOURCE_DIR}/libc/config/baremetal/arm/.
+        ${llvmproject_src_dir}/libc/config/baremetal/config.json
+        ${llvmproject_src_dir}/libc/config/baremetal/arm/.
         DESTINATION
         ${LIBC_CFG_DIR}
     )
@@ -590,7 +591,7 @@ if(C_LIBRARY STREQUAL llvmlibc)
     else()
         ExternalProject_Add(
             libc_hdrgen
-            SOURCE_DIR ${llvmproject_SOURCE_DIR}/llvm
+            SOURCE_DIR ${llvmproject_src_dir}/llvm
             CMAKE_ARGS
                 -DLLVM_ENABLE_RUNTIMES=libc
                 -DLLVM_LIBC_FULL_BUILD=ON
@@ -605,7 +606,7 @@ if(C_LIBRARY STREQUAL llvmlibc)
 
     ExternalProject_Add(
         llvmlibc
-        SOURCE_DIR ${llvmproject_SOURCE_DIR}/runtimes
+        SOURCE_DIR ${llvmproject_src_dir}/runtimes
         INSTALL_DIR llvmlibc/install
         DEPENDS libc_hdrgen
         CMAKE_ARGS
@@ -709,7 +710,7 @@ if(ENABLE_CXX_LIBS)
 
     ExternalProject_Add(
         cxxlibs
-        SOURCE_DIR ${llvmproject_SOURCE_DIR}/runtimes
+        SOURCE_DIR ${llvmproject_src_dir}/runtimes
         INSTALL_DIR ${TEMP_LIB_DIR}
         DEPENDS compiler_rt-install clib-install
         CMAKE_ARGS

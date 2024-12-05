@@ -16,7 +16,7 @@
 #
 
 # If you're reading this file under the name 'multilib.yaml.in' in the
-# LLVM-embedded-toolchain-for-Arm source tree, then it's not valid
+# arm-software/embedded source tree, then it's not valid
 # YAML in its own right: it's a template that CMakeLists.txt will
 # expand into a real 'multilib.yaml' containing a list of library
 # variants and the flags that will select them.

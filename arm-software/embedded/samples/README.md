@@ -1,7 +1,7 @@
-# Sample code for the LLVM Embedded Toolchain for Arm
+# Sample code for the Arm Toolchain for Embedded
 
-This directory contains sample code which demonstrates how to use the LLVM
-Embedded Toolchain for Arm.
+This directory contains sample code which demonstrates how to use the Arm
+Toolchain for Embedded.
 
 ## Directory structure
 
@@ -20,7 +20,7 @@ The build scripts support four different environments:
 ## Prerequisites
 
 In order to compile the samples you will need the following tools:
-* LLVM Embedded Toolchain for Arm
+* Arm Toolchain for Embedded
 * GNU Make (Linux, macOS and MSYS2)
 
 To run the samples you will need a QEMU emulator to be installed on your
@@ -40,13 +40,13 @@ https://www.qemu.org/download/#windows.
 
 To debug the samples you will need to install a debugger
 that supports Arm targets, for example,
-[LLDB](https://lldb.llvm.org/) version matching LLVM Embedded Toolchain for Arm.
+[LLDB](https://lldb.llvm.org/) version matching Arm Toolchain for Embedded.
 Debugging is only supported on Linux and macOS.
 
 ## Specifying the location of the installed toolchain
 
-The Makefiles of the code samples need the location of the installed LLVM
-Embedded Toolchain for Arm.
+The Makefiles of the code samples need the location of the installed Arm
+Toolchain for Embedded.
 
 If you are using Linux or MSYS2 and running the samples directly from the
 installation directory the Makefiles will determine the correct location

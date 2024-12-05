@@ -23,8 +23,10 @@ cmake_minimum_required(VERSION 3.20)
 
 project(arm-multilib)
 
-# Root directory of the repo.
+# Root directory of the ATfE CMake scripts.
 set(TOOLCHAIN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+# Root directory of the llvm-project source.
+set(llvmproject_src_dir ${TOOLCHAIN_SOURCE_DIR}/../..)
 
 # Cache variables to be set by user
 set(MULTILIB_JSON "" CACHE STRING "JSON file to load library definitions from.")
@@ -76,8 +78,6 @@ endforeach()
 find_package(Python3 REQUIRED COMPONENTS Interpreter) # needed by fetch_*.cmake
 
 include(ExternalProject)
-include(${TOOLCHAIN_SOURCE_DIR}/cmake/fetch_llvm.cmake)
-list(APPEND passthrough_dirs "-DFETCHCONTENT_SOURCE_DIR_LLVMPROJECT=${FETCHCONTENT_SOURCE_DIR_LLVMPROJECT}")
 if(C_LIBRARY STREQUAL picolibc)
     include(${TOOLCHAIN_SOURCE_DIR}/cmake/fetch_picolibc.cmake)
     list(APPEND passthrough_dirs "-DFETCHCONTENT_SOURCE_DIR_PICOLIBC=${FETCHCONTENT_SOURCE_DIR_PICOLIBC}")
@@ -97,7 +97,7 @@ if(C_LIBRARY STREQUAL llvmlibc)
         else()
             ExternalProject_Add(
                 libc_hdrgen
-                SOURCE_DIR ${llvmproject_SOURCE_DIR}/llvm
+                SOURCE_DIR ${llvmproject_src_dir}/llvm
                 CMAKE_ARGS
                     -DLLVM_ENABLE_RUNTIMES=libc
                     -DLLVM_LIBC_FULL_BUILD=ON
@@ -292,7 +292,7 @@ add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/multilib-fpus.yaml
     COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/multilib-generate.py"
         "--clang=${LLVM_BINARY_DIR}/bin/clang${CMAKE_EXECUTABLE_SUFFIX}"
-        "--llvm-source=${FETCHCONTENT_SOURCE_DIR_LLVMPROJECT}"
+        "--llvm-source=${llvmproject_src_dir}"
     >> ${CMAKE_CURRENT_BINARY_DIR}/multilib-fpus.yaml
 )
 

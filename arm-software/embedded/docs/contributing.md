@@ -1,6 +1,6 @@
 # Contribution Guide
 
-*LLVM Embedded Toolchain for Arm* integrates
+*Arm Toolchain for Embedded* integrates
 [llvm-project](https://github.com/llvm/llvm-project)
 and [picolibc](https://github.com/picolibc/picolibc).
 Contributions are welcome that improve the project in areas including but not
@@ -14,7 +14,7 @@ Where an issue is encountered that originates within `llvm-project`
 or `picolibc`, it is strongly preferred that the issue is reported
 and addressed directly within that project.
 This benefits all users of the upstream projects and makes it easier to
-support *LLVM Embedded Toolchain for Arm* going forward.
+support *Arm Toolchain for Embedded* going forward.
 
 For guidance on how to contribute to the upstream projects see:
 * `llvm-project` [Contributing to LLVM](https://llvm.org/docs/Contributing.html)
@@ -25,8 +25,8 @@ For guidance on how to contribute to the upstream projects see:
 
 ### Report an issue
 
-Please create a Github issue in the *LLVM Embedded Toolchain for Arm* project
-[Issues](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/issues)
+Please create a Github issue in the *Arm Toolchain for Embedded* project
+[Issues](https://gitlab.arm.com/toolchains/arm-toolchain/-/issues)
 list and label is as a `bug`.
 
 ### Submit a fix
@@ -37,8 +37,8 @@ _How to submit a change_ section below.
 ### Suggest a feature or bigger change
 
 For a bigger change, please create an issue in the
-*LLVM Embedded Toolchain for Arm* project
-[Issues](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/issues)
+*Arm Toolchain for Embedded* project
+[Issues](https://gitlab.arm.com/toolchains/arm-toolchain/-/issues)
 list and label is as an `rfc` (Request for Comments) to initiate the discussion
 first, before submitting the change itself.
 
@@ -48,7 +48,7 @@ the purpose of the change and the key design options, proposed decisions.
 ## How to submit a change
 
 Contributions are accepted under the
-[Apache License 2.0](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/blob/main/LICENSE.txt).
+[Apache License 2.0](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/LICENSE.txt).
 Only submit contributions where you have authored all of the code.
 
 ### Pull request

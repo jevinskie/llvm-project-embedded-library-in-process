@@ -1,4 +1,4 @@
-# LLVM Embedded Toolchain for Arm
+# Arm Toolchain for Embedded
 
 This repository contains build scripts and auxiliary material for building a
 bare-metal LLVM based toolchain targeting Arm based on:
@@ -38,14 +38,14 @@ C++ is partially supported with the use of libc++ and libc++abi from LLVM. Featu
 that are not supported include:
  - Multithreading
 
-LLVM Embedded Toolchain for Arm uses the unstable libc++ ABI version. This ABI
+Arm Toolchain for Embedded uses the unstable libc++ ABI version. This ABI
 uses all the latest libc++ improvements and bugfixes, but may result in link
 errors when linking against objects compiled against older versions of the ABI.
 For more information see https://libcxx.llvm.org/DesignDocs/ABIVersioning.html.
 
 ## Components
 
-The LLVM Embedded Toolchain for Arm relies on the following upstream components
+The Arm Toolchain for Embedded relies on the following upstream components
 
 Component  | Link
 ---------- | ------------------------------------
@@ -70,19 +70,19 @@ models, which have their own licenses. These are not used by default, see
 
 ## Host platforms
 
-LLVM Embedded Toolchain for Arm is built and tested on Ubuntu 18.04 LTS.
+Arm Toolchain for Embedded is built and tested on Ubuntu 18.04 LTS.
 
 The Windows version is built on Windows Server 2019 and lightly tested on Windows 10.
 
 Building on macOS is functional for x86_64 and Apple Silicon.
 
-[Binary packages](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/releases)
+[Binary packages](https://gitlab.arm.com/toolchains/arm-toolchain/-/releases)
 are provided for major LLVM releases for Linux and Windows.
 
 ## Getting started
 
 Download a release of the toolchain for your platform from [Github
-releases](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/releases)
+releases](https://gitlab.arm.com/toolchains/arm-toolchain/-/releases)
 and extract the archive into an arbitrary directory.
 
 ### Pre-requisite for using toolchain on Windows
@@ -110,7 +110,7 @@ To use the toolchain, on the command line you need to provide the following opti
 
 For example:
 ```
-$ PATH=<install-dir>/LLVMEmbeddedToolchainForArm-<revision>/bin:$PATH
+$ PATH=<install-dir>/ATfE-<revision>/bin:$PATH
 $ clang \
 --target=armv6m-none-eabi \
 -mfpu=none \
@@ -140,7 +140,7 @@ directories of the libraries you want to use. For example:
 
 ```
 $ clang \
---sysroot=<install-dir>/LLVMEmbeddedToolchainForArm-<revision>/lib/clang-runtimes/arm-none-eabi/armv6m_soft_nofp \
+--sysroot=<install-dir>/ATfE-<revision>/lib/clang-runtimes/arm-none-eabi/armv6m_soft_nofp \
 --target=armv6m-none-eabi \
 -mfpu=none \
 -fno-exceptions \
@@ -176,32 +176,32 @@ and/or increased memory usage during linking. Some of the options in the config 
 corresponding optimisation passes in the [LLVM project](https://github.com/llvm/llvm-project)
 to find out more. Users are also encouraged to create their own configs and tune their own
 flag parameters.
-Information on LLVM Embedded Toolchain for Arm specific optimization flags is available in [Optimization Flags](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/blob/main/docs/optimization-flags.md)
+Information on Arm Toolchain for Embedded specific optimization flags is available in [Optimization Flags](docs/optimization-flags.md)
 
-Binary releases of the LLVM Embedded Toolchain for Arm are based on release
+Binary releases of the Arm Toolchain for Embedded are based on release
 branches of the upstream LLVM Project, thus can safely be used with all tools
 provided by LLVM [releases](https://github.com/llvm/llvm-project/releases)
 of matching version.
 
-See [Migrating from Arm GNU Toolchain](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/blob/main/docs/migrating.md)
-and [Experimental newlib support](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/blob/main/docs/newlib.md)
-for advice on using LLVM Embedded Toolchain for Arm with existing projects
+See [Migrating from Arm GNU Toolchain](docs/migrating.md)
+and [Experimental newlib support](docs/newlib.md)
+for advice on using Arm Toolchain for Embedded with existing projects
 relying on the Arm GNU Toolchain.
 
 > *Note:* `picolibc` provides excellent
 > [support for Arm GNU Toolchain](https://github.com/picolibc/picolibc/blob/main/doc/using.md),
-> so projects that require using both Arm GNU Toolchain and LLVM Embedded Toolchain for Arm
+> so projects that require using both Arm GNU Toolchain and Arm Toolchain for Embedded
 > can choose either `picolibc` or `newlib`.
 
 ## Building from source
 
-LLVM Embedded Toolchain for Arm is an open source project and thus can be built
+Arm Toolchain for Embedded is an open source project and thus can be built
 from source. Please see the [Building from source](docs/building-from-source.md)
 guide for detailed instructions.
 
 ## Providing feedback and reporting issues
 
-Please raise an issue via [Github issues](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/issues).
+Please raise an issue via [Github issues](https://gitlab.arm.com/toolchains/arm-toolchain/-/issues).
 
 ## Contributions and Pull Requests
 

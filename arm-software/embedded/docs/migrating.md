@@ -17,12 +17,12 @@ Using multiple toolchains to build a project benefits from different checks
 and warnings present in different compilers to catch more issues,
 particularly C and C++ standards compliance, during build time.
 
-LLVM Embedded Toolchain for Arm provides support for multiple sanitizers
+Arm Toolchain for Embedded provides support for multiple sanitizers
 and memory safety features to also catch typical issues at runtime during testing,
 see the [Clang documentation](https://clang.llvm.org/docs/index.html)
-and [samples](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/tree/main/samples/src).
+and [samples](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/samples/src).
 
-LLVM Embedded Toolchain for Arm provides superior performance when targeting the
+Arm Toolchain for Embedded provides superior performance when targeting the
 Armv8-M or later architecture, including the
 [Arm Helium Technology](https://www.arm.com/technologies/helium)
 (M-Profile Vector Extension, MVE).
@@ -83,7 +83,7 @@ For example, GNU and LLVM compilers differ in:
 ## Multilib support
 
 LLVM toolchain for Arm provides multilib support similar to the GNU toolchain,
-see _Using the toolchain_ section in the [README](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/blob/main/README.md#using-the-toolchain),
+see _Using the toolchain_ section in the [README](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/README.md#using-the-toolchain),
 however uses different command line options to control selection of semihosting.
 
 |Use case|GNU options|LLVM options|
@@ -121,5 +121,5 @@ section and referenced by the `__interrupt_vector` symbol.
 See [Picolibc and Operating Systems](https://github.com/picolibc/picolibc/blob/main/doc/os.md)
 for the details on redirecting `stdin`, `stdout` and `stderr`.
 
-The `baremetal-uart` [sample](https://github.com/ARM-software/LLVM-embedded-toolchain-for-Arm/tree/main/samples/src/baremetal-uart)
+The `baremetal-uart` [sample](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/samples/src/baremetal-uart)
 provides a basic code example for redirecting `stdout`.
