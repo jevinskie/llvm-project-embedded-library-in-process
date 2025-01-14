@@ -186,7 +186,7 @@ if(LLVM_TOOLCHAIN_LIBRARY_OVERLAY_INSTALL)
   endif()
 endif()
 
-set(BUG_REPORT_URL "https://gitlab.arm.com/toolchains/arm-toolchain/-/issues" CACHE STRING "")
+set(BUG_REPORT_URL "https://github.com/arm/arm-toolchain/issues" CACHE STRING "")
 set(LLVM_DISTRIBUTION_COMPONENTS
     clang-resource-headers
     clang
@@ -374,7 +374,7 @@ project(
     ArmToolchainForEmbedded
     VERSION ${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR}.${LLVM_VERSION_PATCH}
     DESCRIPTION "Arm Toolchain for Embedded"
-    HOMEPAGE_URL "https://gitlab.arm.com/toolchains/arm-toolchain"
+    HOMEPAGE_URL "https://github.com/arm/arm-toolchain"
 )
 
 # Set package name for shorter archive file name

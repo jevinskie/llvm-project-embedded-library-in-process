@@ -26,7 +26,7 @@ For guidance on how to contribute to the upstream projects see:
 ### Report an issue
 
 Please create a Github issue in the *Arm Toolchain for Embedded* project
-[Issues](https://gitlab.arm.com/toolchains/arm-toolchain/-/issues)
+[Issues](https://github.com/arm/arm-toolchain/issues)
 list and label is as a `bug`.
 
 ### Submit a fix
@@ -38,7 +38,7 @@ _How to submit a change_ section below.
 
 For a bigger change, please create an issue in the
 *Arm Toolchain for Embedded* project
-[Issues](https://gitlab.arm.com/toolchains/arm-toolchain/-/issues)
+[Issues](https://github.com/arm/arm-toolchain/issues)
 list and label is as an `rfc` (Request for Comments) to initiate the discussion
 first, before submitting the change itself.
 
@@ -48,7 +48,7 @@ the purpose of the change and the key design options, proposed decisions.
 ## How to submit a change
 
 Contributions are accepted under the
-[Apache License 2.0](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/LICENSE.txt).
+[Apache License 2.0](https://github.com/arm/arm-toolchain/-/blob/arm-software/embedded/LICENSE.txt).
 Only submit contributions where you have authored all of the code.
 
 ### Pull request

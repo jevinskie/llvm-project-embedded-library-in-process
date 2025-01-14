@@ -162,7 +162,7 @@ The same build directory can be used for both native and MinGW toolchains.
 
 ## Divergences from upstream
 
-See [patches](https://gitlab.arm.com/toolchains/arm-toolchain/-/blob/arm-software/embedded/patches)
+See [patches](https://github.com/arm/arm-toolchain/-/blob/arm-software/embedded/patches)
 directory for the current set of differences from upstream.
 
 The patches for llvm-project are split between two folders, llvm-project and

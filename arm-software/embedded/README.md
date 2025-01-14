@@ -76,13 +76,13 @@ The Windows version is built on Windows Server 2019 and lightly tested on Window
 
 Building on macOS is functional for x86_64 and Apple Silicon.
 
-[Binary packages](https://gitlab.arm.com/toolchains/arm-toolchain/-/releases)
+[Binary packages](https://github.com/arm/arm-toolchain/-/releases)
 are provided for major LLVM releases for Linux and Windows.
 
 ## Getting started
 
 Download a release of the toolchain for your platform from [Github
-releases](https://gitlab.arm.com/toolchains/arm-toolchain/-/releases)
+releases](https://github.com/arm/arm-toolchain/-/releases)
 and extract the archive into an arbitrary directory.
 
 ### Pre-requisite for using toolchain on Windows
@@ -201,7 +201,7 @@ guide for detailed instructions.
 
 ## Providing feedback and reporting issues
 
-Please raise an issue via [Github issues](https://gitlab.arm.com/toolchains/arm-toolchain/-/issues).
+Please raise an issue via [Github issues](https://github.com/arm/arm-toolchain/issues).
 
 ## Contributions and Pull Requests
 
