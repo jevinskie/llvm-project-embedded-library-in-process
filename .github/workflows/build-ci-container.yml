@@ -32,7 +32,7 @@ jobs:
             runs-on: depot-ubuntu-22.04-arm-16
     steps:
       - name: Checkout LLVM
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
         with:
           sparse-checkout: .github/workflows/containers/github-action-ci/
       # podman is not installed by default on the ARM64 images.
@@ -66,7 +66,7 @@ jobs:
           podman save ${{ steps.vars.outputs.container-name-agent-tag }} > ${{ steps.vars.outputs.container-agent-filename }}
 
       - name: Upload container image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.0
         with:
           name: container-${{ matrix.arch }}
           path: "*.tar"
